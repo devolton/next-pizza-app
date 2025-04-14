@@ -1,4 +1,4 @@
-import { FC } from "react";
+import {FC} from "react";
 import {WhiteBlock} from "@/components/shared/WhiteBlock";
 import {FormInput} from "@/components/shared/form";
 

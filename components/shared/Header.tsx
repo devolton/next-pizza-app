@@ -1,17 +1,17 @@
 'use client'
 
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {cn} from "@/shared/lib/utils";
 import Container from "@/components/shared/Container";
 import Image from "next/image";
-import {Button} from "@/components/ui/button";
-import {User} from "lucide-react";
 import Link from "next/link";
 import SearchInput from "@/components/shared/SearchInput";
 import {CartButton} from "@/components/shared/CartButton";
-import {useSession, signIn} from "next-auth/react";
 import ProfileButton from "@/components/shared/ProfileButton";
 import AuthModal from "@/components/shared/modal/auth/AuthModal";
+import {useSearchParams} from "next/navigation";
+import {toast} from "react-hot-toast";
+import {router} from "next/client";
 
 interface Props {
     hasSearch?: boolean;
@@ -22,8 +22,26 @@ interface Props {
 
 const Header: FC<Props> = ({hasSearch = true, hasCart = true, className}) => {
     const [openAuthModal, setOpenAuthModal] = React.useState(false);
-    const {data: session} = useSession();
-    console.log(session);
+    const searchParams = useSearchParams();
+    useEffect(() => {
+        let toastMessage: string = '';
+        if (searchParams.has("paid")) {
+            toastMessage = "Замовлення успішно сплачене! Інформація вадправлена на пошту.";
+        }
+        if (searchParams.has("verified")) {
+            toastMessage = "Замовлення успішно сплачене! Інформація вадправлена на пошту.";
+        }
+        if (toastMessage) {
+            setTimeout(() => {
+                router.replace("/");
+                toast.success(toastMessage, {
+                    duration: 300
+                });
+            }, 500)
+        }
+    }, []);
+
+
     return (
         <header className={cn(' border-b', className)}>
             <Container className={'flex items-center justify-between py-8'}>

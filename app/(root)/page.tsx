@@ -5,17 +5,20 @@ import Filters from "@/components/shared/Filters";
 import ProductsGroupList from "@/components/shared/ProductsGroupList";
 import {Suspense} from "react";
 import {findPizza, GetSearchParams} from "@/shared/lib/find-pizza";
+import Stories from "@/components/shared/Stories";
 
 
-export default async function Home({searchParams}:{searchParams:GetSearchParams}) {
-    const params =(await searchParams);
+export default async function Home({searchParams}: { searchParams: GetSearchParams }) {
+    const params = (await searchParams);
     const categories = await findPizza(params);
     return (
         <>
             <Container className={'mt-10'}>
                 <Title text={'All pizza'} size={'lg'} className={'font-extrabold'}/>
             </Container>
-            <TopBar categories={categories.filter(category=>category.products.length > 0)}/>
+            <TopBar categories={categories.filter(category => category.products.length > 0)}/>
+
+            <Stories/>
 
             <Container className={'pb-14 mt-10'}>
                 {/*filter*/}
@@ -33,10 +36,10 @@ export default async function Home({searchParams}:{searchParams:GetSearchParams}
                                 categories.map((category) => (
                                     category.products.length > 0 &&
                                     <ProductsGroupList
-                                    key={`category-${category.id}`}
-                                    title={category.name}
-                                    categoryId={category.id}
-                                    products={category.products}
+                                        key={`category-${category.id}`}
+                                        title={category.name}
+                                        categoryId={category.id}
+                                        products={category.products}
                                     />
                                 ))
                             }

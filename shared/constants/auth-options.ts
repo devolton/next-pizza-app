@@ -1,5 +1,6 @@
 import {AuthOptions} from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import {UserRole} from "@prisma/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import {prisma} from "@/prisma/prisma-client";
@@ -7,6 +8,10 @@ import {compare, hashSync} from "bcrypt";
 
 export const authOptions:AuthOptions = {
     providers: [
+        GoogleProvider({
+            clientId:process.env.GOOGLE_ID || '',
+            clientSecret: process.env.GOOGLE_SECRET || ''
+        }),
         GitHubProvider({
             clientId: process.env.GITHUB_ID || '',
             clientSecret: process.env.GITHUB_SECRET || '',
@@ -20,6 +25,7 @@ export const authOptions:AuthOptions = {
                 }
             }
         }),
+
         CredentialsProvider({
             name: "Credentials",
             credentials: {
